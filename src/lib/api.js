@@ -17,14 +17,36 @@ export const getApiBaseUrl = () => {
 
 const API_BASE_URL = getApiBaseUrl()
 
+// Token storage utilities
+const getStoredToken = () => {
+    if (typeof window !== 'undefined') {
+        return localStorage.getItem('auth_token')
+    }
+    return null
+}
+
+const setStoredToken = (token) => {
+    if (typeof window !== 'undefined') {
+        localStorage.setItem('auth_token', token)
+    }
+}
+
+const removeStoredToken = () => {
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('auth_token')
+    }
+}
+
 // API request wrapper with error handling
 export const apiRequest = async (endpoint, options = {}) => {
     const url = `${API_BASE_URL}${endpoint}`
+    const token = getStoredToken()
 
     const defaultOptions = {
         credentials: 'include', // Always include cookies for auth
         headers: {
             'Content-Type': 'application/json',
+            ...(token && { 'Authorization': `Bearer ${token}` }), // Add token header if available
             ...options.headers,
         },
     }
@@ -48,6 +70,10 @@ export const apiRequest = async (endpoint, options = {}) => {
         }
 
         if (!response.ok) {
+            // If 401, clear stored token
+            if (response.status === 401) {
+                removeStoredToken()
+            }
             throw new Error(data.message || `HTTP error! status: ${response.status}`)
         }
 
@@ -57,6 +83,9 @@ export const apiRequest = async (endpoint, options = {}) => {
         throw error
     }
 }
+
+// Export token utilities
+export { getStoredToken, setStoredToken, removeStoredToken }
 
 // Auth API endpoints
 export const authAPI = {
@@ -70,17 +99,29 @@ export const authAPI = {
 
     // Login user
     login: async (credentials) => {
-        return apiRequest('/auth/login', {
+        const result = await apiRequest('/auth/login', {
             method: 'POST',
             body: JSON.stringify(credentials),
         })
+
+        // Store token if provided in response (for cross-origin issues)
+        if (result.data.token) {
+            setStoredToken(result.data.token)
+        }
+
+        return result
     },
 
     // Logout user
     logout: async () => {
-        return apiRequest('/auth/logout', {
+        const result = await apiRequest('/auth/logout', {
             method: 'POST',
         })
+
+        // Clear stored token on logout
+        removeStoredToken()
+
+        return result
     },
 
     // Get current user
