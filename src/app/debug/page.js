@@ -6,6 +6,7 @@ import { getStoredToken } from '../../lib/api'
 export default function DebugPage() {
     const [debugInfo, setDebugInfo] = useState(null)
     const [authInfo, setAuthInfo] = useState(null)
+    const [testResults, setTestResults] = useState(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -39,6 +40,40 @@ export default function DebugPage() {
 
         checkDebugInfo()
     }, [])
+
+    const testLogin = async () => {
+        try {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+            const response = await fetch(`${apiUrl}/debug/test-login`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await response.json()
+            setTestResults({ type: 'login', data })
+        } catch (error) {
+            setTestResults({ type: 'login', error: error.message })
+        }
+    }
+
+    const testAuth = async () => {
+        try {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+            const token = getStoredToken()
+            const response = await fetch(`${apiUrl}/auth/me`, {
+                credentials: 'include',
+                headers: {
+                    ...(token && { 'Authorization': `Bearer ${token}` })
+                }
+            })
+            const data = await response.json()
+            setTestResults({ type: 'auth', data, status: response.status })
+        } catch (error) {
+            setTestResults({ type: 'auth', error: error.message })
+        }
+    }
 
     if (loading) {
         return <div className="p-8">Loading debug info...</div>
@@ -74,12 +109,33 @@ export default function DebugPage() {
                         {JSON.stringify(authInfo, null, 2)}
                     </pre>
                 </div>
+
+                {testResults && (
+                    <div className="card">
+                        <h2 className="text-xl font-semibold mb-4">Test Results ({testResults.type})</h2>
+                        <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
+                            {JSON.stringify(testResults, null, 2)}
+                        </pre>
+                    </div>
+                )}
             </div>
 
-            <div className="mt-6">
+            <div className="mt-6 flex gap-4">
                 <a href="/dashboard" className="btn btn-primary">
                     Back to Dashboard
                 </a>
+                <button
+                    onClick={testLogin}
+                    className="btn btn-secondary"
+                >
+                    Test Login
+                </button>
+                <button
+                    onClick={testAuth}
+                    className="btn btn-secondary"
+                >
+                    Test Auth
+                </button>
             </div>
         </div>
     )
