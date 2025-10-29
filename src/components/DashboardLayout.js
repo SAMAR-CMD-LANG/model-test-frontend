@@ -23,7 +23,8 @@ export default function DashboardLayout({
 
     const checkAuth = async () => {
         try {
-            const response = await fetch('http://localhost:5000/auth/me', {
+            const { getApiBaseUrl } = await import('../lib/api')
+            const response = await fetch(`${getApiBaseUrl()}/auth/me`, {
                 credentials: 'include'
             })
 

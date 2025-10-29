@@ -36,7 +36,7 @@ export default function ProfilePage() {
 
     const checkAuth = async () => {
         try {
-            const response = await fetch('http://localhost:5000/auth/me', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/auth/me`, {
                 credentials: 'include'
             })
 
@@ -60,7 +60,7 @@ export default function ProfilePage() {
 
     const fetchStats = async () => {
         try {
-            const response = await fetch('http://localhost:5000/stats', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/stats`, {
                 credentials: 'include'
             })
 
@@ -130,7 +130,7 @@ export default function ProfilePage() {
         setIsChangingPassword(true)
 
         try {
-            const response = await fetch('http://localhost:5000/auth/change-password', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/auth/change-password`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

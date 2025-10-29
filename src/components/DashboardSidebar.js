@@ -14,7 +14,8 @@ export default function DashboardSidebar({
 
     const handleLogout = async () => {
         try {
-            await fetch('http://localhost:5000/auth/logout', {
+            const { getApiBaseUrl } = await import('../lib/api')
+            await fetch(`${getApiBaseUrl()}/auth/logout`, {
                 method: 'POST',
                 credentials: 'include'
             })
