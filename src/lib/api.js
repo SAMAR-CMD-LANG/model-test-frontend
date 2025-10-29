@@ -6,13 +6,13 @@ export const getApiBaseUrl = () => {
         return process.env.NEXT_PUBLIC_API_URL
     }
 
-    // Fallback for development only
+    // Fallback for development
     if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
         return 'http://localhost:5000'
     }
 
-    // This should never be reached in production if NEXT_PUBLIC_API_URL is set
-    throw new Error('NEXT_PUBLIC_API_URL environment variable is required for production deployment')
+    // Production fallback if environment variable is not set
+    return 'https://model-test-backend.onrender.com'
 }
 
 const API_BASE_URL = getApiBaseUrl()

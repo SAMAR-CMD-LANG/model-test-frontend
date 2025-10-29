@@ -12,7 +12,7 @@ export default function DebugPage() {
     useEffect(() => {
         const checkDebugInfo = async () => {
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com'
 
                 // Check health endpoint
                 const healthResponse = await fetch(`${apiUrl}/health`)
@@ -43,7 +43,7 @@ export default function DebugPage() {
 
     const testLogin = async () => {
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com'
             const response = await fetch(`${apiUrl}/debug/test-login`, {
                 method: 'POST',
                 credentials: 'include',
@@ -60,7 +60,7 @@ export default function DebugPage() {
 
     const testAuth = async () => {
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com'
             const token = getStoredToken()
             const response = await fetch(`${apiUrl}/auth/me`, {
                 credentials: 'include',
@@ -88,7 +88,7 @@ export default function DebugPage() {
                     <h2 className="text-xl font-semibold mb-4">Frontend Info</h2>
                     <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
                         {JSON.stringify({
-                            apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
+                            apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com',
                             storedToken: getStoredToken() ? 'Present' : 'Missing',
                             hostname: typeof window !== 'undefined' ? window.location.hostname : 'N/A',
                             origin: typeof window !== 'undefined' ? window.location.origin : 'N/A'

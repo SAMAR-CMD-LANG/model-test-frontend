@@ -8,7 +8,7 @@ export default function TestAuthPage() {
 
     const testCookieAuth = async () => {
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com'
 
             // Test login to get cookies
             const loginResponse = await fetch(`${apiUrl}/debug/test-login`, {
