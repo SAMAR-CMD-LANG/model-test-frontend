@@ -40,7 +40,7 @@ export default function NotePage() {
 
     const fetchNote = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/notes/${noteId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com'}/notes/${noteId}`, {
                 credentials: 'include'
             })
 
@@ -93,7 +93,7 @@ export default function NotePage() {
         if (!note || !formData.title.trim() || !formData.content.trim()) return
 
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/notes/${note.id}/autosave`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com'}/notes/${note.id}/autosave`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ export default function NotePage() {
         setIsSaving(true)
 
         try {
-            const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+            const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com'
             const url = noteId === 'new'
                 ? `${baseUrl}/notes`
                 : `${baseUrl}/notes/${noteId}`
@@ -164,7 +164,7 @@ export default function NotePage() {
         }
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/notes/${note.id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com'}/notes/${note.id}`, {
                 method: 'DELETE',
                 credentials: 'include'
             })

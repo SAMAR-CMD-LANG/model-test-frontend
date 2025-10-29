@@ -20,7 +20,7 @@ export default function LabelsPage() {
 
     const checkAuth = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/auth/me`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com'}/auth/me`, {
                 credentials: 'include'
             })
 
@@ -38,7 +38,7 @@ export default function LabelsPage() {
 
     const checkFeatures = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/features`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com'}/features`, {
                 credentials: 'include'
             })
 
@@ -55,7 +55,7 @@ export default function LabelsPage() {
 
     const handleLogout = async () => {
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/auth/logout`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://model-test-backend.onrender.com'}/auth/logout`, {
                 method: 'POST',
                 credentials: 'include'
             })
