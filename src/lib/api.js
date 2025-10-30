@@ -56,6 +56,7 @@ export const apiRequest = async (endpoint, options = {}) => {
 
     const defaultOptions = {
         credentials: 'include', // Always include cookies for auth
+        mode: 'cors', // Explicitly set CORS mode
         headers: {
             'Content-Type': 'application/json',
             ...(token && { 'Authorization': `Bearer ${token}` }), // Add token header if available
